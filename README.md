@@ -1,76 +1,72 @@
-# ticketing_app (Client Ticket App)
+# TicketDesk — Client Support Ticketing App
 
-A minimal ticketing system built with Flutter and GetX, supporting ticket creation, listing with sorting by priority or age.
-
-## DEMO
-- **Web** Find the working demo created here: https://client-ticket-app-d3a45.web.app
-- **Android** Download the release apk here: https://drive.google.com/drive/folders/1GdFiKZ2d-kruHsA-vBA2q1yxdXYP_5sr?usp=sharing
-
+A professional, offline-first helpdesk app built with **Flutter** and **GetX**. Log client issues, triage them by
+priority, assign owners, hold conversations, and track every change through to resolution — on Android, iOS, web,
+Windows, macOS and Linux.
 
 ## Features
-- Create tickets with a description and priority via a bottom-sheet-popup.
-- List tickets with sorting options: Priority or Age.
-- Responsive UI with a custom theme (blue and amber color scheme).
-- Computed ticket age based on `date_opened`.
-- State management with GetX for reactive updates.
 
-## Prerequisites
-- **Flutter**: Version 3.0.0 or higher (stable channel).
-- **Dart**: Included with Flutter.
-- **Dependencies**: See `pubspec.yaml` for details.
-- **Tools**: 
-  - Android Emulator/iOS Simulator or physical device for mobile.
-  - Web browser for web deployment.
+**Dashboard**
+- Live KPIs: active tickets, urgent, overdue, resolved in the last 7 days, average resolution time
+- 7-day chart of tickets created vs resolved
+- Breakdown by priority, status and category (tap any status to jump to those tickets)
+- "Needs attention" queue (overdue, due within 24 h, high/urgent) and recent activity
 
-## Setup Instructions
-1. **Clone the Repository**:
-   ```bash
-   git clone <https://github.com/PascalJK/ticketing_app>
-   cd client-ticket-app
-   ```
+**Tickets**
+- Full-text search across reference, subject, description, client, email, assignee and tags
+- Quick views with live counts: Active, All, Assigned to me, Unassigned, Overdue, Open, In progress, On hold, Resolved, Closed
+- Filters by priority (multi-select) and category; six sort orders
+- Quick actions menu on every ticket (change status, edit, delete with **undo**)
 
-2. **Install Dependencies**:
-   ```bash
-   flutter pub get
-   ```
+**Ticket details**
+- Sequential references (`TCK-0001`), status workflow: Open → In progress → On hold → Resolved → Closed
+- One-tap actions: Start work, Resolve, Close, Reopen, Assign to me
+- Inline status, priority and assignee changes
+- Conversation thread with client replies and **internal notes**
+- Automatic audit trail of every change (who, what, when)
+- Due dates with "due soon" and "overdue" indicators; resolution time tracking
 
-3. **Enable Web Support** (if targeting web):
-   ```bash
-   flutter config --enable-web
-   ```
+**Create / edit**
+- Validated form (client name, email format, subject, description)
+- Category, priority, status, assignee suggestions, due date + time with quick presets, tags
+- Unsaved-changes protection
 
-## Running the App
-### Option 1: Mobile (CLI)
-1. Ensure an emulator or device is connected:
-   ```bash
-   flutter devices
-   ```
-2. Run the app:
-   ```bash
-   flutter run
-   ```
-3. Select the target device/emulator when prompted.
+**Settings**
+- Display name used for replies and the activity log
+- Light / dark / system theme
+- Load demo tickets, export to JSON (clipboard), import from JSON, delete all data
 
-### Option 2: Web (Local Server)
-1. Build the web version:
-   ```bash
-   flutter build web
-   ```
+All data is stored locally with `shared_preferences`, so the app works fully offline.
 
-## Project Structure
-- `lib/main.dart`: Entry point with `MaterialApp` and theme setup.
-- `lib/pages/widgets/add_ticket_bottom_sheet.dart.dart`: Bottom sheet for creating tickets.
-- `lib/pages/widgets/drop_down_widget.dart`: Dropdown for sorting tickets.
-- `lib/utils/app_themes.dart`: Custom theme with color scheme.
-- `pubspec.yaml`: Dependencies (flutter, get, shortid, dropdown_button2).
+## Getting started
 
-## Usage
-1. **Add Ticket**: Click the floating action button to open the bottom sheet. Enter a description and select a priority (Low, Medium, High).
-2. **Sort Tickets**: Use the dropdown to sort by priority or age.
-3. **View Tickets**: Tickets are displayed in a listview.
-3. **IsClosed**: Tap on a Ticket item to mark it as closed or open.
+```bash
+flutter pub get
+flutter run            # pick a device, or: flutter run -d chrome
+flutter test           # unit + widget tests
+flutter build web      # or: flutter build apk --release
+```
 
-## Notes
-- The app uses GetX for state management and `shortid` for generating short ticket IDs.
-- The theme is defined in `app_themes.dart` for consistent styling.
-- Sorting is reactive and persists when new tickets are added.
+On first launch the app is empty — tap **Load demo tickets** on the dashboard to explore it with sample data,
+or **New ticket** to start logging real ones.
+
+## Project structure
+
+```
+lib/
+├── main.dart                     # App bootstrap, theme, routes
+├── routes.dart                   # Named routes (/, /new-ticket, /ticket/:id, /ticket/:id/edit)
+├── models/ticket_model.dart      # Ticket, comments, activity, priority/status/category enums
+├── services/
+│   ├── storage_service.dart      # Local persistence
+│   └── demo_data.dart            # Optional sample tickets
+├── controllers/
+│   ├── ticket_controller.dart    # CRUD, filters, sorting, dashboard metrics, import/export
+│   └── settings_controller.dart  # Theme and agent name
+├── pages/                        # Shell (responsive nav), dashboard, tickets, detail, form, settings
+├── widgets/                      # Ticket card, badges, avatars, shared UI
+└── utils/                        # Theme, formatters, notifications
+```
+
+The layout adapts automatically: bottom navigation on phones, a navigation rail on tablets, and an extended
+sidebar with two-column ticket details on desktop and web.

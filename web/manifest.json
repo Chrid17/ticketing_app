@@ -1,12 +1,12 @@
 {
-    "name": "ticketing_app",
-    "short_name": "ticketing_app",
+    "name": "TicketDesk",
+    "short_name": "TicketDesk",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#F6F7FB",
+    "theme_color": "#4338CA",
+    "description": "Track, prioritise and resolve client support tickets.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {
